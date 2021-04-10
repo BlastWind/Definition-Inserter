@@ -86,25 +86,6 @@ document.addEventListener("click", (event) => {
 
     document.getElementById("add-to-study-button").onclick = () => {};
   }
-
-  /*
-  const selection = window.getSelection().toString().trim();
-  if (selection.length) {
-    console.log("Got selection: " + selection);
-    //var oRange = selection.getRangeAt(0);
-    //var oRect = oRange.getBoundingClientRect();
-
-    var boxHTML =
-      '<div style="position: absolute; transform:translate(100px, 100px)">Fucking Box Yo!</div>';
-
-    var box = htmlToElement(boxHTML);
-    const input = document.createElement("input");
-    input.style.position = "fixed";
-    input.style.opacity = 0;
-    document.body.appendChild(input);
-
-    
-  } */
 });
 
 function htmlToElement(html) {
