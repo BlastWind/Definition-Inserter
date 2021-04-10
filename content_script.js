@@ -1,7 +1,20 @@
 //import toolBoxTemplate from "./lib/toolbox.html";
 
 const toolBoxTemplate = `<template id="definition-inserter-toolbox-template">
-<style>
+
+<div id="definition-inserter-toolbox">
+<div id="insert-definition-button">
+  
+  I
+</div>
+<div id="add-to-study-button"> 
+A
+</div>
+</div>
+</template>
+`;
+
+const toolBoxStyle = `<style>
 #definition-inserter-toolbox {
   position: absolute;
   color: yellow;
@@ -19,20 +32,11 @@ const toolBoxTemplate = `<template id="definition-inserter-toolbox-template">
     cursor: pointer; 
 }
 </style>
-
-<div id="definition-inserter-toolbox">
-<div id="insert-definition-button">
-  
-  I
-</div>
-<div id="add-to-study-button"> 
-A
-</div>
-</template>
 `;
 
 if (document) {
   if (document.documentElement) {
+    document.documentElement.insertAdjacentHTML("beforeend", toolBoxStyle);
     document.documentElement.insertAdjacentHTML("beforeend", toolBoxTemplate);
   }
 }
@@ -41,9 +45,17 @@ window.addEventListener("message", (e) => {
   console.log(e);
 });
 
-document.addEventListener("mouseup", (event) => {
+function removeToolbox() {
+  var toolBox = document.getElementById("definition-inserter-toolbox");
+  if (toolBox) {
+    toolBox.remove();
+  }
+}
+
+document.addEventListener("click", (event) => {
   const selection = window.getSelection();
   const hit_elem = document.elementFromPoint(event.clientX, event.clientY);
+  removeToolbox();
 
   if (!hit_elem) {
     return;
@@ -55,25 +67,24 @@ document.addEventListener("mouseup", (event) => {
 
   word = selection.toString().trim();
   if (word != "") {
+    // TODO: If more than one word, don't show toolbox
+
+    // if a word is highlighted, show toolbox
+
     var oRange = selection.getRangeAt(0);
-    var toolBox = document.getElementById("definition-inserter-toolbox");
-    if (toolBox) {
-      toolBox.remove();
-    }
+
     var temp = document.getElementById("definition-inserter-toolbox-template");
     var clon = temp.content.cloneNode(true);
-    document.body.appendChild(clon);
-    toolBox = document.getElementById("definition-inserter-toolbox");
+
+    console.log({ clon });
+    document.body.appendChild(clon); // after appending element from <template>, we can select and edit element style
+    var toolBox = document.getElementById("definition-inserter-toolbox");
     toolBox.style.left = event.pageX + "px";
     toolBox.style.top = event.pageY + "px";
 
-    document.getElementById("insert-definition-button").onclick = () => {
-      toolBox.remove();
-    };
+    document.getElementById("insert-definition-button").onclick = () => {};
 
-    document.getElementById("add-to-study-button").onclick = () => {
-      toolBox.remove();
-    };
+    document.getElementById("add-to-study-button").onclick = () => {};
   }
 
   /*
