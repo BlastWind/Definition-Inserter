@@ -21,11 +21,11 @@ const toolBoxTemplate = `<template id="definition-inserter-toolbox-template">
 </style>
 
 <div id="definition-inserter-toolbox">
-<div id="insert-definition-button>
+<div id="insert-definition-button">
   
   I
 </div>
-<div id="add-to-study-button> 
+<div id="add-to-study-button"> 
 A
 </div>
 </template>
@@ -67,13 +67,13 @@ document.addEventListener("mouseup", (event) => {
     toolBox.style.left = event.pageX + "px";
     toolBox.style.top = event.pageY + "px";
 
-    document.getElementById("insert-definition-button").on("click", (event) => {
+    document.getElementById("insert-definition-button").onclick = () => {
       toolBox.remove();
-    });
+    };
 
-    document.getElementById("add-to-study-button").on("click", (event) => {
+    document.getElementById("add-to-study-button").onclick = () => {
       toolBox.remove();
-    });
+    };
   }
 
   /*
