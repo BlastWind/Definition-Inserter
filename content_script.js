@@ -105,6 +105,7 @@ document.addEventListener("click", (event) => {
     document.getElementById("savePng").onclick = saveToStudyList;
 
     function insertDefinition() {
+      removeToolbox();
       chrome.runtime.sendMessage(
         { word, messageType: "insert-definition" },
         (response) => {
@@ -130,10 +131,9 @@ document.addEventListener("click", (event) => {
         (response) => {
           // {word, key: val} is short for {word: word, key: val}
           console.log("returned in content script: ", { response });
+          removeToolbox();
         }
       );
-
-      removeToolbox();
     }
   }
 });
