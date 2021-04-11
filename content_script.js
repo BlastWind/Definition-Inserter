@@ -84,7 +84,11 @@ document.addEventListener("click", (event) => {
 
     document.getElementById("insert-definition-button").onclick = () => {};
 
-    document.getElementById("add-to-study-button").onclick = () => {};
+    document.getElementById("add-to-study-button").onclick = () => {
+      chrome.runtime.sendMessage({ word }, (response) => {
+        console.log("returned in content script: ", {response});
+      });
+    };
   }
 });
 
