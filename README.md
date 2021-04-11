@@ -10,8 +10,9 @@ Because we require host permissions, this chrome extension needs substantial rev
 Once you've highlighted a word you're unsure about, a tooltip will pop up allowing you to insert its definition or add it to your to-study list.
 
 ### Hotkeys
-Alt+A - Automatically insert the definition
-Alt+S - Automatically save the word to a to-study list
+`Alt+A`- Automatically insert the definition
+
+`Alt+S` - Automatically save the word to a to-study list
 
 ## Authors
 
