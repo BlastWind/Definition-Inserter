@@ -64,7 +64,7 @@ document.addEventListener("click", (event) => {
   }
 
   word = selection.toString().trim();
-  if (word != "") {
+  if (word.length) {
     // TODO: If more than one word, don't show toolbox
 
     // if a word is highlighted, show toolbox
@@ -83,6 +83,7 @@ document.addEventListener("click", (event) => {
     // TODO: Put insert wikipedia logic here (and in background.js), var word = what is currently selected
     document.getElementById("insert-definition-button").onclick = () => {
         // sendMessage({messageType: "insert-definition"}, (response) => insert response in HTML)
+        chrome.runtime.sendMessage(word, )
 
     };
 
