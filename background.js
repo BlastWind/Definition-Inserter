@@ -1,13 +1,16 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+
+
   const {word} = request;
   // fetch wikipedia with ${word} as parameter to set var definition 
   const definition = "placeholder" 
-
-  chrome.storage.sync.set({ 'place' : definition }, function() {
+  var toStore = {}; 
+  toStore[word] = definition; 
+  chrome.storage.sync.set(toStore, function() {
     if (chrome.runtime.error) {
       console.log("Runtime error.");
     }else{
-      chrome.storage.sync.get('place', function(definition) {
+      chrome.storage.sync.get(word, function(definition) {
         //let's check if it is indeed saved
         if (chrome.runtime.error) {
           console.log("Runtime error.");
@@ -15,8 +18,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           sendResponse(definition)
         }
       });
-
-
     }
   });
 

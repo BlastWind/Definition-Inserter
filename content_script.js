@@ -82,10 +82,12 @@ document.addEventListener("click", (event) => {
     toolBox.style.left = event.pageX + "px";
     toolBox.style.top = event.pageY + "px";
 
+    // TODO: Put insert wikipedia logic here (and in background.js), var word = what is currently selected
     document.getElementById("insert-definition-button").onclick = () => {};
 
+    // TODO: Put add to chrome storage logic here
     document.getElementById("add-to-study-button").onclick = () => {
-      chrome.runtime.sendMessage({ word }, (response) => {
+      chrome.runtime.sendMessage({ word,  messageType: "save-to-study-list"}, (response) => { // {word, key: val} is short for {word: word, key: val}
         console.log("returned in content script: ", {response});
       });
     };
