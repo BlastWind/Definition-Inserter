@@ -3,19 +3,41 @@
   <head>
     <style>
       #definition-list {
-        display: grid;
-        grid-template-columns: auto auto;
+        display: table;
+        min-width: 250px;
       }
 
-      #definition-list > div {
+      #definition-list > div.row {
+        display: table-row;
+      }
+
+      div.row > div {
+        display: table-cell;
+        cursor: pointer;
         padding: 1rem;
-        color: black;
+      }
+
+      div.row:hover {
+        text-decoration: line-through;
+      }
+      h2 {
+        text-align: center;
+      }
+
+      #remove-button {
+        color: white;
+        background: rgb(255, 81, 0);
+        padding: 0.5rem 0.5rem;
+        text-align: center;
+        margin: 1rem;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
+    <h2>Study List</h2>
     <div id="definition-list"></div>
+    <div id="remove-button">Remove All</div>
     <script src="popup.js"></script>
-    <h1>Popup Placeholder</h1>
   </body>
 </html>
