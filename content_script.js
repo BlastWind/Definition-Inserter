@@ -62,11 +62,12 @@ document.addEventListener("click", (event) => {
 	if (/INPUT|TEXTAREA/.test(hit_elem.nodeName) || hit_elem.isContentEditable) {
 		return;
 	}
-
-	word = selection.toString().trim();
+	// Check for empty, multiple words, or non-alphabetical letters
+	var word = selection.toString().trim();
+	if (!word.length || word.includes(" ") || !/^[a-zA-Z]+$/.test(word)) {
+		return;
+	}
 	if (word.length) {
-		// TODO: If more than one word, don't show toolbox
-
 		// if a word is highlighted, show toolbox
 
 		var oRange = selection.getRangeAt(0);
@@ -74,13 +75,13 @@ document.addEventListener("click", (event) => {
 		var temp = document.getElementById("definition-inserter-toolbox-template");
 		var clon = temp.content.cloneNode(true);
 
-		console.log({ clon });
+		// console.log({ clon });
 		document.body.appendChild(clon); // after appending element from <template>, we can select and edit element style
 		var toolBox = document.getElementById("definition-inserter-toolbox");
 		toolBox.style.left = event.pageX + "px";
 		toolBox.style.top = event.pageY + "px";
 
-		// TODO: Put insert wikipedia logic here (and in background.js), var word = what is currently selected
+		// Inserts definition in format: term (definition)
 		document.getElementById("insert-definition-button").onclick = () => {
 			chrome.runtime.sendMessage(
 				{ word, messageType: "insert-definition" },
