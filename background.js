@@ -1,6 +1,7 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 	const { word, messageType } = request;
 	console.log({ messageType });
+
 	switch (messageType) {
 		case "save-to-study-list":
 			saveToStudyList(word)
@@ -11,9 +12,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					console.log(err);
 				});
 		case "insert-definition":
-			getDefinition(word).then((definition)=>{
-        
-      })
+			getDefinition(word)
+				.then((definition) => {
+					sendResponse(definition);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
 		default:
 			break;
 	}
@@ -52,21 +57,21 @@ async function saveToStudyList(word) {
  */
 async function getDefinition(term) {
 	// Check wikipedia
-
 	let title = term.trim().replace(" ", "_");
 	let response = await fetch(
 		`https://en.wikipedia.org/w/api.php?action=query&redirects&prop=pageprops&format=json&titles=${title}`,
 	);
 	let data = await response.json();
 	let pages = data?.["query"]?.["pages"];
-	let result = pages[Object?.keys(pages)?.[0]]?.["pageprops"]?.["wikibase-shortdesc"];
+	let shortDesc =
+		pages[Object?.keys(pages)?.[0]]?.["pageprops"]?.["wikibase-shortdesc"];
 	if (
-		!result ||
-		result ===
+		!shortDesc ||
+		shortDesc ===
 			"Disambiguation page providing links to topics that could be referred to by the same search term"
 	) {
 		//TODO - Check Dictionary.com, handle more than 1 definition
-		result = "";
+		shortDesc = "";
 	}
-	return result;
+	return shortDesc;
 }
