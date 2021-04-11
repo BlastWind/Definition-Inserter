@@ -11,6 +11,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				.catch((err) => {
 					console.log(err);
 				});
+			break;
 		case "insert-definition":
 			getDefinition(word)
 				.then((definition) => {
@@ -19,11 +20,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 				.catch((err) => {
 					console.log(err);
 				});
+			break;
 		default:
 			break;
 	}
 
 	return true;
+});
+
+chrome.commands.onCommand.addListener((command) => {
+  // console.log(command);
+	sendCommand = {};
+	sendCommand["command"] = command;
+	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+		chrome.tabs.sendMessage(tabs[0].id, sendCommand);
+		// console.log("sent command" + sendCommand);
+	});
 });
 
 function saveToStudyList(word) {

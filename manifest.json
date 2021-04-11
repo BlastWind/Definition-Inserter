@@ -22,7 +22,22 @@
 				"mac": "MacCtrl+Shift+F"
 			},
 			"description": "Opens options.html"
+		},
+		"insert": {
+			"suggested_key": {
+				"default": "Alt+A",
+				"mac": "Alt+A"
+			},
+			"description": "Hotkey to insert definition"
+		},
+		"save": {
+			"suggested_key": {
+				"default": "Alt+S",
+				"mac": "Alt+S"
+			},
+			"description": "Hotkey to save to list"
 		}
+		
 	},
 	"action": {
 		"default_popup": "popup.html",

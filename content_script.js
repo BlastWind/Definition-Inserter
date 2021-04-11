@@ -74,8 +74,6 @@ document.addEventListener("click", (event) => {
 	if (word.length) {
 		// if a word is highlighted, show toolbox
 
-		var oRange = selection.getRangeAt(0);
-
 		var temp = document.getElementById("definition-inserter-toolbox-template");
 		var clon = temp.content.cloneNode(true);
 
@@ -86,10 +84,15 @@ document.addEventListener("click", (event) => {
 		toolBox.style.top = event.pageY + "px";
 
 		// Inserts definition in format: term (definition)
-		document.getElementById("insert-definition-button").onclick = () => {
+		document.getElementById("insert-definition-button").onclick = insertDefinition;
+
+		document.getElementById("add-to-study-button").onclick = saveToStudyList;
+
+		function insertDefinition() {
 			chrome.runtime.sendMessage(
 				{ word, messageType: "insert-definition" },
 				(response) => {
+					var oRange = selection.getRangeAt(0);
 					// Last-minute check for whether definition valid
 					if (response?.length) {
 						oRange.collapse(false);
@@ -100,10 +103,10 @@ document.addEventListener("click", (event) => {
 					}
 				},
 			);
-		};
+		}
 
 		// TODO: Put add to chrome storage logic here
-		document.getElementById("add-to-study-button").onclick = () => {
+		function saveToStudyList() {
 			chrome.runtime.sendMessage(
 				{ word, messageType: "save-to-study-list" },
 				(response) => {
@@ -111,7 +114,60 @@ document.addEventListener("click", (event) => {
 					console.log("returned in content script: ", { response });
 				},
 			);
-		};
+		}
+	}
+});
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+	const selection = window.getSelection();
+
+	// Check for empty, multiple words, or non-alphabetical letters
+	var untrimmedWord = selection.toString();
+	var word = selection.toString().trim();
+	if (!word.length || word.includes(" ") || !/^[a-zA-Z]+$/.test(word)) {
+		return;
+	}
+
+	var rightBuffer = untrimmedWord.charAt(untrimmedWord.length - 1) === " " ? "" : " ";
+
+	if (word.length) {
+		switch (request.command) {
+			case "save":
+				saveToStudyList();
+				break;
+			case "insert":
+				insertDefinition();
+		}
+		removeToolbox();
+
+		// Inserts definition in format: term (definition)
+		function insertDefinition() {
+			chrome.runtime.sendMessage(
+				{ word, messageType: "insert-definition" },
+				(response) => {
+					var oRange = selection.getRangeAt(0);
+					// Last-minute check for whether definition valid
+					if (response?.length) {
+						oRange.collapse(false);
+						oRange.insertNode(
+							document.createTextNode(`${rightBuffer}(${response}) `),
+						);
+						oRange.collapse(true);
+					}
+				},
+			);
+		}
+
+		// TODO: Put add to chrome storage logic here
+		function saveToStudyList() {
+			chrome.runtime.sendMessage(
+				{ word, messageType: "save-to-study-list" },
+				(response) => {
+					// {word, key: val} is short for {word: word, key: val}
+					console.log("returned in content script: ", { response });
+				},
+			);
+		}
 	}
 });
 
