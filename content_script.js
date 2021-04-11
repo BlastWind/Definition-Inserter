@@ -1,5 +1,3 @@
-//import toolBoxTemplate from "./lib/toolbox.html";
-
 const toolBoxTemplate = `<template id="definition-inserter-toolbox-template">
 
 <div id="definition-inserter-toolbox">
@@ -83,7 +81,10 @@ document.addEventListener("click", (event) => {
     toolBox.style.top = event.pageY + "px";
 
     // TODO: Put insert wikipedia logic here (and in background.js), var word = what is currently selected
-    document.getElementById("insert-definition-button").onclick = () => {};
+    document.getElementById("insert-definition-button").onclick = () => {
+        // sendMessage({messageType: "insert-definition"}, (response) => insert response in HTML)
+
+    };
 
     // TODO: Put add to chrome storage logic here
     document.getElementById("add-to-study-button").onclick = () => {
