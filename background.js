@@ -21,20 +21,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 					console.log(err);
 				});
 			break;
-		default:
-			break;
 	}
 
 	return true;
 });
 
 chrome.commands.onCommand.addListener((command) => {
-  // console.log(command);
 	sendCommand = {};
 	sendCommand["command"] = command;
 	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
 		chrome.tabs.sendMessage(tabs[0].id, sendCommand);
-		// console.log("sent command" + sendCommand);
 	});
 });
 
@@ -42,23 +38,25 @@ function saveToStudyList(word) {
 	return new Promise(function (resolve, reject) {
 		// fetch wikipedia with ${word} as parameter to set var definition
 		getDefinition(word).then((definition) => {
-			var toStore = {};
-			toStore[word] = definition;
-			chrome.storage.sync.set(toStore, function () {
-				if (chrome.runtime.error) {
-					reject("error during chrome storage set");
-				} else {
-					chrome.storage.sync.get(word, function (definition) {
-						//let's check if it is indeed saved
-						if (chrome.runtime.error) {
-							reject("error during chrome storage get");
-						} else {
-							console.log("we are at returning place!");
-							resolve(definition);
-						}
-					});
-				}
-			});
+			if (definition) {
+				var toStore = {};
+				toStore[word] = definition;
+				chrome.storage.sync.set(toStore, function () {
+					if (chrome.runtime.error) {
+						reject("error during chrome storage set");
+					} else {
+						chrome.storage.sync.get(word, function (definition) {
+							//let's check if it is indeed saved
+							if (chrome.runtime.error) {
+								reject("error during chrome storage get");
+							} else {
+								console.log("we are at returning place!");
+								resolve(definition);
+							}
+						});
+					}
+				});
+			}
 		});
 	});
 }
